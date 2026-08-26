@@ -1,0 +1,52 @@
+//
+//  GuitarTone.swift
+//  SonicPi
+//
+//  Created by Yan Cervantes  on 26/08/26.
+//
+
+import SwiftUI
+
+struct GuitarTone: View {
+  
+  @State private var viewModel: GuitarToneViewModel = GuitarToneViewModel()
+
+  var body: some View {
+    NavigationStack {
+      VStack(spacing: 24) {
+        Image(systemName: "guitars")
+          .font(.system(size: 64))
+          .foregroundStyle(.tint)
+          .accessibilityHidden(true)
+
+        VStack(spacing: 8) {
+          Text("Guitar Tone Lab")
+            .font(.largeTitle.bold())
+          Text("Primer laboratorio de audio de SonicPi")
+            .foregroundStyle(.secondary)
+        }
+        //Controls
+        GuitarTonePlaybackControls(status: viewModel.status, output: viewModel)
+        GroupBox("Cadena planeada") {
+          Text("Player  →  Mixer  →  Effects  →  Output")
+            .font(.body.monospaced())
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+        }
+
+        Spacer()
+      }
+      .padding()
+      .navigationTitle("SonicPi")
+      .alert(viewModel.message, isPresented: $viewModel.showError) {
+        Button("Ok") {
+          viewModel.prepareAudioTapped()
+        }
+      }
+    }
+  }
+}
+
+#Preview {
+  GuitarTone()
+}
