@@ -9,5 +9,6 @@
 @MainActor
 protocol GuitarToneOutput: AnyObject {
   func prepareAudioTapped() async
+  func didEndingAudioTapped()
 }
 

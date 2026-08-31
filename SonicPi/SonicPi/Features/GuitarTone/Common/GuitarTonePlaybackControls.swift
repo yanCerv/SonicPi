@@ -24,6 +24,12 @@ struct GuitarTonePlaybackControls: View {
       }
       .buttonStyle(.borderedProminent)
       .accessibilityHint("Configura la cadena de audio para una pista que añadiremos después.")
+      
+      Button("Finalizar audio") {
+        output.didEndingAudioTapped()
+      }
+      .buttonStyle(.borderedProminent)
+      .accessibilityHint("Finaliza la cadena de sonido de la pista.")
     }
   }
 }
@@ -38,4 +44,5 @@ struct GuitarTonePlaybackControls: View {
 @MainActor
 private final class GuitarTonePlaybackControlsPreviewOutput: GuitarToneOutput {
   func prepareAudioTapped() {}
+  func didEndingAudioTapped() {}
 }

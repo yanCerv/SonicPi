@@ -38,4 +38,8 @@ final class AudioEngineService {
   func startEngine() throws {
     try engine.start()
   }
+  
+  func endEngine() {
+    engine.stop()
+  }
 }

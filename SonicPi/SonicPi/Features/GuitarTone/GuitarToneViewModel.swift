@@ -83,4 +83,9 @@ extension GuitarToneViewModel: GuitarToneOutput {
     
     prepareSoundEngineGraph()
   }
+  
+  func didEndingAudioTapped() {
+    
+    audioEngine.endEngine()
+  }
 }
