@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GuitarTone: View {
+struct GuitarToneView: View {
   
   @State private var viewModel: GuitarToneViewModel = GuitarToneViewModel()
 
@@ -40,13 +40,16 @@ struct GuitarTone: View {
       .navigationTitle("SonicPi")
       .alert(viewModel.message, isPresented: $viewModel.showError) {
         Button("Ok") {
-          viewModel.prepareAudioTapped()
+       // Todo some alert action
         }
+      }
+      .task {
+        viewModel.initialState()
       }
     }
   }
 }
 
 #Preview {
-  GuitarTone()
+  GuitarToneView()
 }

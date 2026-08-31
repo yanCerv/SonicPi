@@ -18,7 +18,9 @@ struct GuitarTonePlaybackControls: View {
         .accessibilityLabel("Estado de audio: \(status.title)")
 
       Button("Preparar audio") {
-        output.prepareAudioTapped()
+        Task {
+          await output.prepareAudioTapped()
+        }
       }
       .buttonStyle(.borderedProminent)
       .accessibilityHint("Configura la cadena de audio para una pista que añadiremos después.")

@@ -8,6 +8,6 @@
 
 @MainActor
 protocol GuitarToneOutput: AnyObject {
-  func prepareAudioTapped()
+  func prepareAudioTapped() async
 }
 

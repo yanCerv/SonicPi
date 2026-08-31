@@ -1,24 +1,41 @@
-import AVFAudio
+//
+//  AudioEngineService.swift
+//  SonicPi
+//
+//  Created by Yan Cervantes  on 31/08/26.
+//
 
-/// Owns the AVAudioEngine graph and keeps AVFAudio out of SwiftUI views.
-///
-/// The first graph is deliberately small. Phase 1 will schedule a local file
-/// on `player`; Phase 2 will insert effect nodes after `mixer`.
+import AVFAudio
+import Accelerate
+
 final class AudioEngineService {
   private let engine = AVAudioEngine()
   private let player = AVAudioPlayerNode()
   private let mixer = AVAudioMixerNode()
+  
   private var graphIsPrepared = false
 
-  func prepareGraph() throws {
+  func prepareGraph() {
     guard !graphIsPrepared else { return }
 
-    engine.attach(player)
-    engine.attach(mixer)
-    engine.connect(player, to: mixer, format: nil)
-    engine.connect(mixer, to: engine.mainMixerNode, format: nil)
+    let inputNode = engine.inputNode
+    let format = inputNode.inputFormat(forBus: 0)
+    let mainMixerNode = engine.mainMixerNode
+    
+    engine.connect(inputNode, to: engine.outputNode, format: nil)
     engine.prepare()
-
     graphIsPrepared = true
+  }
+  
+  func currentAudioInputInfo() -> AudioInputInfo {
+    let input = engine.inputNode
+    let format = input.inputFormat(forBus: 0)
+    let channelCount = Int(format.channelCount)
+    
+    return AudioInputInfo(sampleRate: format.sampleRate, channelCount: channelCount)
+  }
+  
+  func startEngine() throws {
+    try engine.start()
   }
 }

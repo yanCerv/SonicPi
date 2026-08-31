@@ -11,7 +11,7 @@ import SwiftUI
 struct SonicPiApp: App {
   var body: some Scene {
     WindowGroup {
-      GuitarTone()
+      GuitarToneView()
     }
   }
 }
