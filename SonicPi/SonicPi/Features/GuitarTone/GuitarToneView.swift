@@ -25,8 +25,10 @@ struct GuitarToneView: View {
           Text("Primer laboratorio de audio de SonicPi")
             .foregroundStyle(.secondary)
         }
+        
         //Controls
         GuitarTonePlaybackControls(status: viewModel.status, output: viewModel)
+        
         GroupBox("Cadena planeada") {
           Text("Player  →  Mixer  →  Effects  →  Output")
             .font(.body.monospaced())
@@ -38,6 +40,15 @@ struct GuitarToneView: View {
       }
       .padding()
       .navigationTitle("SonicPi")
+      .sheet(isPresented: $viewModel.showEqualizer, content: {
+        GuitarToneEqualizerControls(settings: viewModel.equalizerSettings, output: viewModel)
+      })
+      .sheet(isPresented: $viewModel.showDelay, content: {
+        GuitarToneDelayControls(settings: viewModel.delaySettings, output: viewModel)
+      })
+      .sheet(isPresented: $viewModel.showReverb, content: {
+        GuitarToneReverbControls(settings: viewModel.reverbSettings, output: viewModel)
+      })
       .alert(viewModel.message, isPresented: $viewModel.showError) {
         Button("Ok") {
        // Todo some alert action

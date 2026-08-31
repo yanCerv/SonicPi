@@ -11,13 +11,23 @@ import Observation
 
 @Observable
 final class GuitarToneViewModel {
+  
   private let audioEngine: AudioEngineService
+  
   private(set) var status: GuitarTonePlaybackStatus = .idle
+  private(set) var equalizerSettings: EqualizerSettings = EqualizerSettings()
+  private(set) var delaySettings: DelaySettings = DelaySettings()
+  private(set) var reverbSettings: ReverbSettings = ReverbSettings()
   
   //Alert
   var showError: Bool = false
   var message: String = ""
-
+  
+  //Sheets
+  var showEqualizer: Bool = false
+  var showDelay: Bool = false
+  var showReverb: Bool = false
+  
   //MARK: Init
   
   init(audioEngine: AudioEngineService = AudioEngineService()) {
@@ -48,7 +58,6 @@ final class GuitarToneViewModel {
   
   private func prepareSoundEngineGraph() {
     do {
-      audioEngine.prepareGraph()
       let inputInfo = audioEngine.currentAudioInputInfo()
       
       guard inputInfo.isAvailable else {
@@ -57,7 +66,7 @@ final class GuitarToneViewModel {
         status = .error("No audio input available")
         return
       }
-      debugPrint(inputInfo)
+      audioEngine.prepareGraph()
       try audioEngine.startEngine()
       status = .ready
     } catch {
@@ -66,9 +75,24 @@ final class GuitarToneViewModel {
       status = .error(error.localizedDescription)
     }
   }
+  
+  private func updateEqualizerSettings(settings: EqualizerSettings) {
+    equalizerSettings = settings
+    audioEngine.apply(settings)
+  }
+  
+  private func updateDelaySettings(settings: DelaySettings) {
+    delaySettings = settings
+    audioEngine.apply(settings)
+  }
+  
+  private func updateReverbSettings(settings: ReverbSettings) {
+    reverbSettings = settings
+    audioEngine.apply(settings)
+  }
 }
 
-//MARK: Output
+//MARK: Guitar Tone Output
 
 extension GuitarToneViewModel: GuitarToneOutput {
   
@@ -85,7 +109,55 @@ extension GuitarToneViewModel: GuitarToneOutput {
   }
   
   func didEndingAudioTapped() {
-    
+    status = .finished
     audioEngine.endEngine()
+  }
+}
+
+//MARK: - Equalizer Output - already set on first extension Mark
+
+extension GuitarToneViewModel {
+  func didShowEqualizer() {
+    showEqualizer = true
+  }
+  
+  func didHideEqualizer() {
+    showEqualizer = false
+  }
+  
+  func equalizerSettingsChanged(_ settings: EqualizerSettings) {
+    updateEqualizerSettings(settings: settings)
+  }
+}
+
+//MARK: - Delay Output - already set on first extension Mark
+
+extension GuitarToneViewModel {
+  func didShowDelay() {
+    showDelay = true
+  }
+  
+  func didHideDelay() {
+    showDelay = false
+  }
+  
+  func delaySettingsChanged(_ settings: DelaySettings) {
+    updateDelaySettings(settings: settings)
+  }
+}
+
+//MARK: - Reverb Output - already set on first extension Mark
+
+extension GuitarToneViewModel {
+  func didShowReverb() {
+    showReverb = true
+  }
+  
+  func didHideReverb() {
+    showReverb = false
+  }
+  
+  func reverbSettingsChanged(_ settings: ReverbSettings) {
+    updateReverbSettings(settings: settings)
   }
 }

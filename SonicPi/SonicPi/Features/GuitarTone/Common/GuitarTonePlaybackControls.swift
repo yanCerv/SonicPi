@@ -25,24 +25,58 @@ struct GuitarTonePlaybackControls: View {
       .buttonStyle(.borderedProminent)
       .accessibilityHint("Configura la cadena de audio para una pista que añadiremos después.")
       
-      Button("Finalizar audio") {
-        output.didEndingAudioTapped()
+      if status == .ready {
+        HStack(spacing: 6) {
+          
+          Button("Ecualizador") {
+            output.didShowEqualizer()
+          }
+          .buttonStyle(.borderedProminent)
+          .accessibilityHint("Muestra el ecualizador de tres bandas y volumen.")
+
+          Button("Delay") {
+            output.didShowDelay()
+          }
+          .buttonStyle(.borderedProminent)
+          .accessibilityHint("Muestra los controles de repetición del delay.")
+
+          Button("Reverb") {
+            output.didShowReverb()
+          }
+          .buttonStyle(.borderedProminent)
+          .accessibilityHint("Muestra los controles de espacio y mezcla de reverb.")
+          
+          Button("Finalizar audio") {
+            output.didEndingAudioTapped()
+          }
+          .foregroundStyle(.red)
+          .buttonStyle(.borderedProminent)
+          .accessibilityHint("Finaliza la cadena de sonido de la pista.")
+        }
       }
-      .buttonStyle(.borderedProminent)
-      .accessibilityHint("Finaliza la cadena de sonido de la pista.")
     }
   }
 }
 
 #Preview {
-  GuitarTonePlaybackControls(
-    status: .idle,
-    output: GuitarTonePlaybackControlsPreviewOutput()
-  )
+  GuitarTonePlaybackControls(status: .idle, output: GuitarTonePlaybackControlsPreviewOutput())
 }
+
 // Preview Class
 @MainActor
-private final class GuitarTonePlaybackControlsPreviewOutput: GuitarToneOutput {
+final class GuitarTonePlaybackControlsPreviewOutput: GuitarToneOutput {
   func prepareAudioTapped() {}
   func didEndingAudioTapped() {}
+  
+  func didShowEqualizer() {}
+  func didHideEqualizer() {}
+  func equalizerSettingsChanged(_ settings: EqualizerSettings) {}
+  
+  func didShowDelay() {}
+  func didHideDelay() {}
+  func delaySettingsChanged(_ settings: DelaySettings) {}
+  
+  func didShowReverb() {}
+  func didHideReverb() {}
+  func reverbSettingsChanged(_ settings: ReverbSettings) {}
 }

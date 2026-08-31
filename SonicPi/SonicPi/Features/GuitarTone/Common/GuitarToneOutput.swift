@@ -10,5 +10,16 @@
 protocol GuitarToneOutput: AnyObject {
   func prepareAudioTapped() async
   func didEndingAudioTapped()
+  
+  func didShowEqualizer()
+  func didHideEqualizer()
+  func equalizerSettingsChanged(_ settings: EqualizerSettings)
+  
+  func didShowDelay()
+  func didHideDelay()
+  func delaySettingsChanged(_ settings: DelaySettings)
+  
+  func didShowReverb()
+  func didHideReverb()
+  func reverbSettingsChanged(_ settings: ReverbSettings)
 }
-
