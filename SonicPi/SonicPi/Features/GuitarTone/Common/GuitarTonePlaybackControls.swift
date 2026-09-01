@@ -50,9 +50,15 @@ struct GuitarTonePlaybackControls: View {
             output.didEndingAudioTapped()
           }
           .foregroundStyle(.red)
-          .buttonStyle(.borderedProminent)
+          .buttonStyle(.bordered)
           .accessibilityHint("Finaliza la cadena de sonido de la pista.")
         }
+        
+        Button("Metronomo") {
+          output.didToggleMetronome()
+        }
+        .buttonStyle(.borderedProminent)
+        .accessibilityHint("Inicia un metronomo con un bit predeterminado o configurado.")
       }
     }
   }

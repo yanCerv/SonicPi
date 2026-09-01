@@ -19,6 +19,7 @@ final class GuitarToneViewModel {
   private(set) var equalizerSettings: EqualizerSettings = EqualizerSettings()
   private(set) var delaySettings: DelaySettings = DelaySettings()
   private(set) var reverbSettings: ReverbSettings = ReverbSettings()
+  private(set) var metronomeSettings: MetronomeSettings?
   
   //Alert
   var showError: Bool = false
@@ -109,6 +110,18 @@ extension GuitarToneViewModel: GuitarToneOutput {
     }
   }
   
+  
+  func didToggleMetronome() {
+    if metronomeSettings == nil {
+      self.metronomeSettings = MetronomeSettings(bpm: 100, bitsPerMeasure: 4, volume: 0.7)
+      guard let metronomeSettings else { return }
+      audioEngine.startMetronome(with: metronomeSettings)
+    } else {
+      audioEngine.stopMetronome()
+      metronomeSettings = nil
+    }
+  }
+
   func didEndingAudioTapped() {
     status = .finished
     audioEngine.endEngine()

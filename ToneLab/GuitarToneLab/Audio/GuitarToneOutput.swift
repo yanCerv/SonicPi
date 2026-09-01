@@ -20,6 +20,8 @@ public protocol GuitarToneOutput: AnyObject {
   func prepareAudioTapped() async
   func didEndingAudioTapped()
   
+  func didToggleMetronome()
+  
   func didShow(_ effect: EffectType)
   func didHide()
   func clearEffect(_ effect: EffectType)
@@ -36,6 +38,8 @@ public final class GuitarTonePlaybackControlsPreviewOutput: GuitarToneOutput {
   
   public func prepareAudioTapped() {}
   public func didEndingAudioTapped() {}
+  
+  public func didToggleMetronome() {}
   
   public func didShow(_ effect: EffectType) {}
   public func didHide() {}

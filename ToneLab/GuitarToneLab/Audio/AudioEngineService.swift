@@ -9,12 +9,15 @@ import AVFAudio
 
 public final class AudioEngineService {
   private let engine = AVAudioEngine()
-  private let player = AVAudioPlayerNode()
+  private let metronomePlayer = AVAudioPlayerNode()
   private let mixer = AVAudioMixerNode()
   
   private let equalizer: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 3)
   private let delay: AVAudioUnitDelay = AVAudioUnitDelay()
   private let reverb: AVAudioUnitReverb = AVAudioUnitReverb()
+  
+  private var metronomeFormat: AVAudioFormat?
+  private var metronomeBuffer: AVAudioPCMBuffer?
   
   private var graphIsPrepared = false
   
@@ -32,6 +35,9 @@ public final class AudioEngineService {
     let mainMixerNode = engine.mainMixerNode
     let reverbFormat = AVAudioFormat(standardFormatWithSampleRate: inputFormat.sampleRate, channels: 2)
     
+    metronomeFormat = reverbFormat
+    metronomeBuffer = setupMetronomeClickBuffer(whit: reverbFormat)
+      
     equalizer.auAudioUnit.maximumFramesToRender = 1_024
     delay.auAudioUnit.maximumFramesToRender = 1_024
     reverb.auAudioUnit.maximumFramesToRender = 1_024
@@ -40,17 +46,23 @@ public final class AudioEngineService {
     engine.attach(delay)
     engine.attach(reverb)
     engine.attach(mixer)
+    engine.attach(metronomePlayer)
     
     configureEqualizer()
     configureDelay()
     configureReverb()
     
+    // Effects
     engine.connect(inputNode, to: equalizer, format: inputFormat)
     engine.connect(equalizer, to: delay, format: inputFormat)
     engine.connect(delay, to: mixer, format: inputFormat)
     engine.connect(mixer, to: reverb, format: reverbFormat)
     engine.connect(reverb, to: mainMixerNode, format: reverbFormat)
     
+    // Player - metronome
+    engine.connect(metronomePlayer, to: mainMixerNode, format: reverbFormat)
+    
+    // Mixer
     engine.connect(mainMixerNode, to: engine.outputNode, format: nil)
         
     engine.prepare()
@@ -160,5 +172,81 @@ extension AudioEngineService {
   public func apply(_ settings: ReverbSettings) {
     reverb.loadFactoryPreset(settings.preset)
     reverb.wetDryMix = settings.wetDryMix
+  }
+}
+
+//MARK: - Metronome
+
+extension AudioEngineService {
+  private func setupMetronomeClickBuffer(whit format: AVAudioFormat?) -> AVAudioPCMBuffer? {
+    guard let format else { return nil }
+    let duration = 0.03
+    let frequency = 1_000.0
+    let frameCount = AVAudioFrameCount(format.sampleRate * duration)
+    
+    guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount),
+    let channelData = buffer.floatChannelData else { return nil }
+    
+    buffer.frameLength = frameCount
+    let counter = Int(frameCount)
+    
+    for frame in 0..<counter {
+      let time = Double(frame) / format.sampleRate
+      let envelope = 1 - (time / duration)
+      let sin = sin(2 * .pi * frequency * time) * envelope * 0.35
+      let sample = Float(sin)
+      
+      for channel in 0..<Int(format.channelCount) {
+        channelData[channel][frame] = sample
+      }
+    }
+    
+    return buffer
+  }
+  
+  //Helper
+  private func makeMetronomyBeatBuffer(settings: MetronomeSettings, format: AVAudioFormat, clickBuffer: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
+    guard settings.bpm > 0 else { return nil }
+    
+    let secondsPerBeat = 60 / settings.bpm
+    let frameCount = AVAudioFrameCount(format.sampleRate * secondsPerBeat)
+    
+    guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount),
+          let beatData = buffer.floatChannelData,
+          let clickData = clickBuffer.floatChannelData else { return nil }
+    
+    
+    buffer.frameLength = frameCount
+    let clickBufferCount = Int(clickBuffer.frameLength)
+    let frameCounter = Int(frameCount)
+    let channelCount = Int(format.channelCount)
+    
+    let copiedFrameCount = min(clickBufferCount, frameCounter)
+    for channel in 0..<channelCount {
+      for frame in 0..<frameCounter {
+        beatData[channel][frame] = 0
+      }
+      
+      for frame in 0..<copiedFrameCount {
+        beatData[channel][frame] = clickData[channel][frame]
+      }
+    }
+    
+    return buffer
+  }
+  
+  public func startMetronome(with settings: MetronomeSettings) {
+    guard let metronomeFormat,
+          let clickBuffer = metronomeBuffer,
+          let beatBuffer = makeMetronomyBeatBuffer(settings: settings, format: metronomeFormat, clickBuffer: clickBuffer) else { return }
+        
+    metronomePlayer.stop()
+    metronomePlayer.volume = settings.volume
+    metronomePlayer.scheduleBuffer(beatBuffer, at: nil, options: .loops)
+    metronomePlayer.play()
+  }
+  
+  public func stopMetronome() {
+    metronomePlayer.stop()
   }
 }
