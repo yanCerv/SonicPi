@@ -28,13 +28,13 @@ final class GuitarToneViewModel {
   var showDelay: Bool = false
   var showReverb: Bool = false
   
-  //MARK: Init
+  //MARK: - Init
   
   init(audioEngine: AudioEngineService = AudioEngineService()) {
     self.audioEngine = audioEngine
   }
   
-  //MARK: Methods
+  //MARK: - Methods
   
   func initialState() {
     verifyRecordPermissions()
@@ -44,7 +44,7 @@ final class GuitarToneViewModel {
   //MARK: - verify recordPermissions
   
   private func verifyRecordPermissions() {
-    switch AVAudioApplication.shared.recordPermission {
+    switch AVAudioApplication.shared.recordPermission { // TODO set pertintents actions for those cases
     case .undetermined:
       debugPrint("Permission undetermined")
     case .denied:
@@ -90,6 +90,10 @@ final class GuitarToneViewModel {
     reverbSettings = settings
     audioEngine.apply(settings)
   }
+  
+  private func clearAllSettings() {
+    audioEngine.clearEngine()
+  }
 }
 
 //MARK: Guitar Tone Output
@@ -97,15 +101,13 @@ final class GuitarToneViewModel {
 extension GuitarToneViewModel: GuitarToneOutput {
   
   func prepareAudioTapped() async {
-    let permissionGranted = await AVAudioApplication.requestRecordPermission()
-    guard permissionGranted else {
+    if await AVAudioApplication.requestRecordPermission() {
+      prepareSoundEngineGraph()
+    } else {
       showError = true
       message = "Permission denied by user"
       status = .error("Permission denied by user")
-      return
     }
-    
-    prepareSoundEngineGraph()
   }
   
   func didEndingAudioTapped() {
@@ -125,6 +127,10 @@ extension GuitarToneViewModel {
     showEqualizer = false
   }
   
+  func didClearEqualizer() {
+    audioEngine.clearEqualizer()
+  }
+  
   func equalizerSettingsChanged(_ settings: EqualizerSettings) {
     updateEqualizerSettings(settings: settings)
   }
@@ -141,6 +147,10 @@ extension GuitarToneViewModel {
     showDelay = false
   }
   
+  func didClearDelay() {
+    audioEngine.clearDelay()
+  }
+  
   func delaySettingsChanged(_ settings: DelaySettings) {
     updateDelaySettings(settings: settings)
   }
@@ -155,6 +165,10 @@ extension GuitarToneViewModel {
   
   func didHideReverb() {
     showReverb = false
+  }
+  
+  func didClearReverb() {
+    audioEngine.clearReverb()
   }
   
   func reverbSettingsChanged(_ settings: ReverbSettings) {

@@ -66,6 +66,24 @@ final class AudioEngineService {
   func endEngine() {
     engine.stop()
   }
+  
+  func clearEqualizer() {
+    configureEqualizer()
+  }
+  
+  func clearDelay() {
+    configureDelay()
+  }
+  
+  func clearReverb() {
+    configureReverb()
+  }
+  
+  func clearEngine() {
+    configureEqualizer()
+    configureReverb()
+    configureDelay()
+  }
 }
 
 // MARK: - Equalizer
@@ -122,6 +140,8 @@ extension AudioEngineService {
     delay.wetDryMix = settings.wetDryMix
   }
 }
+
+//MARK: - Reverb
 
 extension AudioEngineService {
   

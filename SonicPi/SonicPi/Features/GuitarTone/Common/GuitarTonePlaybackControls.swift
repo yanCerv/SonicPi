@@ -27,7 +27,6 @@ struct GuitarTonePlaybackControls: View {
       
       if status == .ready {
         HStack(spacing: 6) {
-          
           Button("Ecualizador") {
             output.didShowEqualizer()
           }
@@ -70,13 +69,16 @@ final class GuitarTonePlaybackControlsPreviewOutput: GuitarToneOutput {
   
   func didShowEqualizer() {}
   func didHideEqualizer() {}
+  func didClearEqualizer() {}
   func equalizerSettingsChanged(_ settings: EqualizerSettings) {}
   
   func didShowDelay() {}
   func didHideDelay() {}
+  func didClearDelay() {}
   func delaySettingsChanged(_ settings: DelaySettings) {}
   
   func didShowReverb() {}
   func didHideReverb() {}
+  func didClearReverb() {}
   func reverbSettingsChanged(_ settings: ReverbSettings) {}
 }

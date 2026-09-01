@@ -22,21 +22,12 @@ struct GuitarToneView: View {
         VStack(spacing: 8) {
           Text("Guitar Tone Lab")
             .font(.largeTitle.bold())
-          Text("Primer laboratorio de audio de SonicPi")
+          Text("Laboratorio de audio de SonicPi")
             .foregroundStyle(.secondary)
         }
         
         //Controls
         GuitarTonePlaybackControls(status: viewModel.status, output: viewModel)
-        
-        GroupBox("Cadena planeada") {
-          Text("Player  →  Mixer  →  Effects  →  Output")
-            .font(.body.monospaced())
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-        }
-
-        Spacer()
       }
       .padding()
       .navigationTitle("SonicPi")
@@ -51,7 +42,7 @@ struct GuitarToneView: View {
       })
       .alert(viewModel.message, isPresented: $viewModel.showError) {
         Button("Ok") {
-       // Todo some alert action
+          //No-Op
         }
       }
       .task {

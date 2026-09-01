@@ -13,13 +13,16 @@ protocol GuitarToneOutput: AnyObject {
   
   func didShowEqualizer()
   func didHideEqualizer()
+  func didClearEqualizer()
   func equalizerSettingsChanged(_ settings: EqualizerSettings)
   
   func didShowDelay()
   func didHideDelay()
+  func didClearDelay()
   func delaySettingsChanged(_ settings: DelaySettings)
   
   func didShowReverb()
   func didHideReverb()
+  func didClearReverb()
   func reverbSettingsChanged(_ settings: ReverbSettings)
 }
