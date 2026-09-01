@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import GuitarToneLab
 
-struct GuitarToneEqualizerControls: View {
+public struct GuitarToneEqualizerControls: View {
   
-  let settings: EqualizerSettings
-  let output: GuitarToneOutput
+  public let settings: EqualizerSettings
+  public let output: GuitarToneOutput
   
   private var lowGainBinding: Binding<Float> {
     Binding(
@@ -40,12 +41,12 @@ struct GuitarToneEqualizerControls: View {
     )
   }
   
-  init(settings: EqualizerSettings = EqualizerSettings(), output: GuitarToneOutput) {
+  public init(settings: EqualizerSettings = EqualizerSettings(), output: GuitarToneOutput) {
     self.settings = settings
     self.output = output
   }
   
-  var body: some View {
+  public var body: some View {
     VStack(alignment: .center, spacing: 6) {
       GroupBox("Ecualizador") {
         EqualizerGainControl(title: "Bajos", value: lowGainBinding)

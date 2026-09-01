@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct GuitarToneDelayControls: View {
-  let settings: DelaySettings
-  let output: GuitarToneOutput
+public struct GuitarToneDelayControls: View {
+  public let settings: DelaySettings
+  public let output: GuitarToneOutput
 
-  init(settings: DelaySettings = DelaySettings(), output: GuitarToneOutput) {
+  public init(settings: DelaySettings = DelaySettings(), output: GuitarToneOutput) {
     self.settings = settings
     self.output = output
   }
 
-  var body: some View {
+  public var body: some View {
     GroupBox("Delay") {
       VStack(alignment: .leading, spacing: 16) {
         timeControl

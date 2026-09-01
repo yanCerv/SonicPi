@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C0F603C3046E3E5007BB084 /* GuitarToneLab in Frameworks */ = {isa = PBXBuildFile; productRef = 7C0F603B3046E3E5007BB084 /* GuitarToneLab */; };
 		7C67F96B303EFA90006E149F /* GuitarToneLab in Frameworks */ = {isa = PBXBuildFile; productRef = 7C67F96A303EFA90006E149F /* GuitarToneLab */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C0F603C3046E3E5007BB084 /* GuitarToneLab in Frameworks */,
 				7C67F96B303EFA90006E149F /* GuitarToneLab in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +120,7 @@
 			name = SonicPi;
 			packageProductDependencies = (
 				7C67F96A303EFA90006E149F /* GuitarToneLab */,
+				7C0F603B3046E3E5007BB084 /* GuitarToneLab */,
 			);
 			productName = SonicPi;
 			productReference = 7C67F93F303EFA1C006E149F /* SonicPi.app */;
@@ -202,7 +205,7 @@
 			mainGroup = 7C67F936303EFA1C006E149F;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				7C67F969303EFA90006E149F /* XCLocalSwiftPackageReference "../ToneLab" */,
+				7C0F603A3046E3E5007BB084 /* XCLocalSwiftPackageReference "../ToneLab" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7C67F940303EFA1C006E149F /* Products */;
@@ -646,13 +649,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		7C67F969303EFA90006E149F /* XCLocalSwiftPackageReference "../ToneLab" */ = {
+		7C0F603A3046E3E5007BB084 /* XCLocalSwiftPackageReference "../ToneLab" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../ToneLab;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7C0F603B3046E3E5007BB084 /* GuitarToneLab */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GuitarToneLab;
+		};
 		7C67F96A303EFA90006E149F /* GuitarToneLab */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GuitarToneLab;

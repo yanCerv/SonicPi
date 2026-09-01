@@ -7,17 +7,18 @@
 
 import SwiftUI
 import AVFoundation
+import GuitarToneLab
 
-struct GuitarToneReverbControls: View {
-  let settings: ReverbSettings
-  weak var output: GuitarToneOutput?
+public struct GuitarToneReverbControls: View {
+  public let settings: ReverbSettings
+  public let output: GuitarToneOutput
 
-  init(settings: ReverbSettings = ReverbSettings(), output: GuitarToneOutput? = nil) {
+  public init(settings: ReverbSettings = ReverbSettings(), output: GuitarToneOutput) {
     self.settings = settings
     self.output = output
   }
 
-  var body: some View {
+  public var body: some View {
     GroupBox("Reverb") {
       VStack(alignment: .leading, spacing: 16) {
         Picker("Espacio", selection: presetBinding) {
@@ -42,7 +43,7 @@ struct GuitarToneReverbControls: View {
         }
 
         Button("Listo") {
-          output?.didHideReverb()
+          output.didHideReverb()
         }
         .buttonStyle(.borderedProminent)
         .frame(maxWidth: .infinity)
@@ -54,14 +55,14 @@ struct GuitarToneReverbControls: View {
   private var presetBinding: Binding<AVAudioUnitReverbPreset> {
     Binding(
       get: { settings.preset },
-      set: { output?.reverbSettingsChanged(makeSettings(preset: $0)) }
+      set: { output.reverbSettingsChanged(makeSettings(preset: $0)) }
     )
   }
 
   private var wetDryMixBinding: Binding<Float> {
     Binding(
       get: { settings.wetDryMix },
-      set: { output?.reverbSettingsChanged(makeSettings(wetDryMix: $0)) }
+      set: { output.reverbSettingsChanged(makeSettings(wetDryMix: $0)) }
     )
   }
 
@@ -77,5 +78,5 @@ struct GuitarToneReverbControls: View {
 }
 
 #Preview {
-  GuitarToneReverbControls()
+  GuitarToneReverbControls(output: GuitarTonePlaybackControlsPreviewOutput())
 }

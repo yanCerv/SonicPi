@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct EqualizerGainControl: View {
+public struct EqualizerGainControl: View {
   
-  let title: String
-  let value: Binding<Float>
+  public let title: String
+  public let value: Binding<Float>
   
-  var body: some View {
+  public var body: some View {
     VStack(alignment: .leading, spacing: 6) {
       HStack {
         Text(title)

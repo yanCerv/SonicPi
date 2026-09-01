@@ -5,9 +5,10 @@
 //  Created by Yan Cervantes  on 26/08/26.
 //
 
-import Foundation
 import AVFAudio
+import Foundation
 import Observation
+import GuitarToneLab
 
 @Observable
 final class GuitarToneViewModel {

@@ -5,13 +5,13 @@
 //  Created by Yan Cervantes  on 26/08/26.
 //
 
-enum GuitarTonePlaybackStatus: Equatable {
+public enum GuitarTonePlaybackStatus: Equatable {
   case idle
   case ready
   case finished
   case error(String)
 
-  var title: String {
+  public var title: String {
     switch self {
     case .idle: "Listo para configurar audio"
     case .ready: "Cadena de audio preparada"
@@ -20,7 +20,7 @@ enum GuitarTonePlaybackStatus: Equatable {
     }
   }
 
-  var symbolName: String {
+  public var symbolName: String {
     switch self {
     case .idle: "waveform"
     case .ready: "checkmark.circle.fill"

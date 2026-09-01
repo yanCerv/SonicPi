@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GuitarToneLab
 
 struct GuitarToneView: View {
   
