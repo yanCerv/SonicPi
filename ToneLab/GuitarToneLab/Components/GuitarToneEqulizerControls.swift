@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import GuitarToneLab
 
 public struct GuitarToneEqualizerControls: View {
   
@@ -55,7 +54,7 @@ public struct GuitarToneEqualizerControls: View {
         volumeControl
         
         Button("Listo") {
-          output.didHideEqualizer()
+          output.didHide()
         }
         .buttonStyle(.borderedProminent)
         .accessibilityHint("Aceptar y guardar configuraciones seleccionadas.")

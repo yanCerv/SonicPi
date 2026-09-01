@@ -7,7 +7,6 @@
 
 import SwiftUI
 import AVFoundation
-import GuitarToneLab
 
 public struct GuitarToneReverbControls: View {
   public let settings: ReverbSettings
@@ -43,7 +42,7 @@ public struct GuitarToneReverbControls: View {
         }
 
         Button("Listo") {
-          output.didHideReverb()
+          output.didHide()
         }
         .buttonStyle(.borderedProminent)
         .frame(maxWidth: .infinity)

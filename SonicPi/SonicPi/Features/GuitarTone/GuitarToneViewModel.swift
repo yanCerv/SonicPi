@@ -25,9 +25,7 @@ final class GuitarToneViewModel {
   var message: String = ""
   
   //Sheets
-  var showEqualizer: Bool = false
-  var showDelay: Bool = false
-  var showReverb: Bool = false
+  var showEffect: EffectType?
   
   //MARK: - Init
   
@@ -115,61 +113,32 @@ extension GuitarToneViewModel: GuitarToneOutput {
     status = .finished
     audioEngine.endEngine()
   }
-}
-
-//MARK: - Equalizer Output - already set on first extension Mark
-
-extension GuitarToneViewModel {
-  func didShowEqualizer() {
-    showEqualizer = true
+  
+  func didShow(_ effect: EffectType) {
+   showEffect = effect
   }
   
-  func didHideEqualizer() {
-    showEqualizer = false
+  func didHide() {
+    showEffect = nil
   }
   
-  func didClearEqualizer() {
-    audioEngine.clearEqualizer()
+  func clearEffect(_ effect: EffectType) {
+    switch effect {
+      case .equalizer:
+      audioEngine.clearEqualizer()
+    case .delay:
+      audioEngine.clearDelay()
+    case .reverb:
+      audioEngine.clearReverb()
+    }
   }
   
   func equalizerSettingsChanged(_ settings: EqualizerSettings) {
     updateEqualizerSettings(settings: settings)
   }
-}
-
-//MARK: - Delay Output - already set on first extension Mark
-
-extension GuitarToneViewModel {
-  func didShowDelay() {
-    showDelay = true
-  }
-  
-  func didHideDelay() {
-    showDelay = false
-  }
-  
-  func didClearDelay() {
-    audioEngine.clearDelay()
-  }
   
   func delaySettingsChanged(_ settings: DelaySettings) {
     updateDelaySettings(settings: settings)
-  }
-}
-
-//MARK: - Reverb Output - already set on first extension Mark
-
-extension GuitarToneViewModel {
-  func didShowReverb() {
-    showReverb = true
-  }
-  
-  func didHideReverb() {
-    showReverb = false
-  }
-  
-  func didClearReverb() {
-    audioEngine.clearReverb()
   }
   
   func reverbSettingsChanged(_ settings: ReverbSettings) {

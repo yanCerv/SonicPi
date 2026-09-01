@@ -29,19 +29,19 @@ struct GuitarTonePlaybackControls: View {
       if status == .ready {
         HStack(spacing: 6) {
           Button("Ecualizador") {
-            output.didShowEqualizer()
+            output.didShow(.equalizer)
           }
           .buttonStyle(.borderedProminent)
           .accessibilityHint("Muestra el ecualizador de tres bandas y volumen.")
 
           Button("Delay") {
-            output.didShowDelay()
+            output.didShow(.delay)
           }
           .buttonStyle(.borderedProminent)
           .accessibilityHint("Muestra los controles de repetición del delay.")
 
           Button("Reverb") {
-            output.didShowReverb()
+            output.didShow(.reverb)
           }
           .buttonStyle(.borderedProminent)
           .accessibilityHint("Muestra los controles de espacio y mezcla de reverb.")

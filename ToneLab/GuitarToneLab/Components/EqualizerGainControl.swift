@@ -2,7 +2,7 @@
 //  EqualizerGainControl.swift
 //  SonicPi
 //
-//  Created by Yan Cervantes  on 31/08/26.
+//  Created by Yan Cervantes on 31/08/26.
 //
 
 import SwiftUI

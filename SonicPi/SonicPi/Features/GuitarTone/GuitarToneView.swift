@@ -32,14 +32,15 @@ struct GuitarToneView: View {
       }
       .padding()
       .navigationTitle("SonicPi")
-      .sheet(isPresented: $viewModel.showEqualizer, content: {
-        GuitarToneEqualizerControls(settings: viewModel.equalizerSettings, output: viewModel)
-      })
-      .sheet(isPresented: $viewModel.showDelay, content: {
-        GuitarToneDelayControls(settings: viewModel.delaySettings, output: viewModel)
-      })
-      .sheet(isPresented: $viewModel.showReverb, content: {
-        GuitarToneReverbControls(settings: viewModel.reverbSettings, output: viewModel)
+      .sheet(item: $viewModel.showEffect, content: { effect in
+        switch effect {
+          case .equalizer:
+          GuitarToneEqualizerControls(settings: viewModel.equalizerSettings, output: viewModel)
+        case .delay:
+          GuitarToneDelayControls(settings: viewModel.delaySettings, output: viewModel)
+        case .reverb:
+          GuitarToneReverbControls(settings: viewModel.reverbSettings, output: viewModel)
+        }
       })
       .alert(viewModel.message, isPresented: $viewModel.showError) {
         Button("Ok") {

@@ -32,7 +32,7 @@ public struct GuitarToneDelayControls: View {
         )
 
         Button("Listo") {
-          output.didHideDelay()
+          output.didHide()
         }
         .buttonStyle(.borderedProminent)
         .frame(maxWidth: .infinity)
